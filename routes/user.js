@@ -1,10 +1,11 @@
 const { Router } = require("express");
-const { userModel } = require("../db");
+const { userModel, purchaseModel } = require("../db");
 const { z } = require("zod");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const userRouter = Router();
 const {JWT_USER_SECRET} = require("../config");
+const { userMiddleware } = require("../middleware/user");
 
 userRouter.post("/signup", async function (req, res) {
     const requiredBody = z.object({
@@ -89,9 +90,13 @@ userRouter.post("/signin", async function (req, res) {
 
 })
 
-userRouter.get("/purchases", function (req, res) {
+userRouter.get("/purchases",userMiddleware,async function (req, res) {
+    const userId=req.userId;
+    const purchases=await purchaseModel.find({
+        userId
+    })
     res.json({
-        message: "signup endpoint"
+        purchases:purchases
     })
 })
 
