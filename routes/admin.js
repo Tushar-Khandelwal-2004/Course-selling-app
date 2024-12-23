@@ -6,6 +6,7 @@ const bcrypt = require("bcrypt");
 const {JWT_ADMIN_SECRET} = require("../config");
 const adminRouter = Router();
 const{ adminMiddleware }=require("../middleware/admin");
+const admin = require("../middleware/admin");
 
 
 adminRouter.post("/signup", async function (req, res) {
@@ -98,15 +99,36 @@ adminRouter.post("/course", adminMiddleware ,async function (req, res) {
     })
 })
 
-adminRouter.put("/course", function (req, res) {
+adminRouter.put("/course",adminMiddleware ,async function (req, res) {
+    const adminId=req.userId;
+    const {title , description , imageUrl , price , courseId}=req.body;
+    const course=await courseModel.updateOne({
+        _id:courseId,
+        creatorId:adminId
+    },{
+        title:title,
+        description:description,
+        imageUrl:imageUrl,
+        price:price,
+        creatorId:adminId
+    })
+    res.json({
+        message:"Course Updated!",
+        courseId:course._id
+
+    })
     res.json({
         message: "signup endpoint"
     })
 })
 
-adminRouter.get("/course/bulk", function (req, res) {
+adminRouter.get("/course/bulk", adminMiddleware ,async function (req, res) {
+    const adminId=req.userId;
+    const courses=courseModel.find({
+        creatorId:adminId
+    });
     res.json({
-        message: "signup endpoint"
+        courses
     })
 })
 
