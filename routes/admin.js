@@ -88,8 +88,8 @@ adminRouter.post("/course", adminMiddleware ,async function (req, res) {
     const course=await courseModel.create({
         title:title,
         description:description,
-        imageUrl:imageUrl,
         price:price,
+        imageUrl:imageUrl,
         creatorId:adminId
     })
     res.json({
@@ -117,18 +117,15 @@ adminRouter.put("/course",adminMiddleware ,async function (req, res) {
         courseId:course._id
 
     })
-    res.json({
-        message: "signup endpoint"
-    })
 })
 
 adminRouter.get("/course/bulk", adminMiddleware ,async function (req, res) {
     const adminId=req.userId;
-    const courses=courseModel.find({
+    const courses=await courseModel.find({
         creatorId:adminId
     });
     res.json({
-        courses
+        courses:courses
     })
 })
 
