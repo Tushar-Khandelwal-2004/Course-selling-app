@@ -4,7 +4,7 @@ const { z } = require("zod");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const userRouter = Router();
-const JWT_SECRET = "TusharTheDon";
+const {JWT_USER_SECRET} = require("../config");
 
 userRouter.post("/signup", async function (req, res) {
     const requiredBody = z.object({
@@ -76,7 +76,7 @@ userRouter.post("/signin", async function (req, res) {
     if (passwordMatch) {
         const token = jwt.sign({
             id: user._id.toString()
-        }, JWT_SECRET);
+        }, JWT_USER_SECRET);
         res.json({
             token: token
         })
