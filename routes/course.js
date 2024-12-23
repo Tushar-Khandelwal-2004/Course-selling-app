@@ -6,7 +6,7 @@ const courseRouter=Router();
 
 
 courseRouter.post("/purchase",userMiddleware,async function(req,res){
-    const userId=req.body.userId;
+    const userId=req.userId;
     const courseId=req.body.courseId;
     await purchaseModel.create({
         userId:userId,
