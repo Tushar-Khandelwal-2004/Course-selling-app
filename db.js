@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 mongoose.connect("mongodb+srv://Tushar:Khan571$@tushar.ivdat.mongodb.net/course-selling-app")
 const Schema=mongoose.Schema;
 const ObjectId=mongoose.Types.ObjectId;
-const admin = require("./routes/admin");
 const userSchema = new Schema({
     email:{type:String,unique:true},
     password:String,
